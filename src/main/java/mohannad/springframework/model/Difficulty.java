@@ -1,7 +1,7 @@
 package mohannad.springframework.model;
 
 public enum Difficulty {
-    EASE,
+    EASY,
     MODERATE,
     HARD
 }

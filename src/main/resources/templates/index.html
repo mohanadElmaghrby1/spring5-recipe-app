@@ -7,5 +7,22 @@
 </head>
 <body>
 <h1>My Recipe!</h1>
+
+<table  class="table table-striped">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="recipe:${recipes}">
+        <td th:text="${recipe.id}">123</td>
+        <td th:text="${recipe.description}">wow</td>
+    </tr>
+    </tbody>
+
+</table>
+
 </body>
 </html>

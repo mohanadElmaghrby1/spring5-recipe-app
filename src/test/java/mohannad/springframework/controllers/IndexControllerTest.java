@@ -1,17 +1,21 @@
 package mohannad.springframework.controllers;
 
+import mohannad.springframework.model.Recipe;
 import mohannad.springframework.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class IndexControllerTest {
 
@@ -33,17 +37,31 @@ public class IndexControllerTest {
 
     @Test
     public void getIndexPage() {
-        //make sure that getIndexPage return the proper template name (index)
-        assertEquals(indexController.getIndexPage(model),"index");
 
+        Set<Recipe> recipeData = new HashSet<>();
+        recipeData.add(new Recipe());
+        recipeData.add(new Recipe());
+
+        //when call recipeService.getRecipes() return instead recipeData
+        when(recipeService.getRecipes()).thenReturn(recipeData);
+
+        ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
+
+        String viewName = indexController.getIndexPage(model);
+        //make sure that getIndexPage return the proper template name (index)
+        assertEquals(viewName,"index");
+
+        //verify that recipeService getRecipes is called one time
+        verify(recipeService , times(1)).getRecipes();
 
         //make sure that model add attribute is called one time
         //eq("recipes") telling that we want to make sure that the first arg is equal recipes
         //anySet() generate any set
-        verify(model , times(1)).addAttribute(eq("recipes"), anySet());
+        verify(model , times(1)).addAttribute(eq("recipes"), argumentCaptor.capture());
 
-        //verify that recipeService getRecipes is called one time
-        verify(recipeService , times(1)).getRecipes();
+        //verify the passed set
+        Set<Recipe>setIn = argumentCaptor.getValue();
+        assertEquals(2 ,setIn.size() );
 
     }
 }

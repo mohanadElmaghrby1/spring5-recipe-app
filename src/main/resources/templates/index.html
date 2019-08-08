@@ -7,11 +7,14 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!--th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}-->
+
+    <script src="webjars/jquery/3.4.1/jquery.min.js"></script>
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
+            crossorigin="anonymous" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"></script>
 </head>
 <body>
 
@@ -30,19 +33,24 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Description</th>
+                                <th>view</th>
                             </tr>
                             </thead>
                             <tr th:remove="all">
                                 <td th:text="${recipe.id}">123</td>
                                 <td th:text="${recipe.description}">Tasty Goodnees 1</td>
+                                <td><a href="#">View</a></td>
                             </tr>
                             <tr th:remove="all">
                                 <td th:text="${recipe.id}">12333</td>
                                 <td th:text="${recipe.description}">Tasty Goodnees 2</td>
+                                <td><a href="#">View</a></td>
                             </tr>
                             <tr th:each="recipe : ${recipes}">
                                 <td th:text="${recipe.id}">334</td>
                                 <td th:text="${recipe.description}">Tasty Goodnees 3</td>
+                                <td><a href="#" th:href="@{'recipe/show/' + ${recipe.id}}">View</a></td>
+
                             </tr>
                         </table>
                     </div>
@@ -59,42 +67,42 @@
 <!--<html lang="en" xmlns:th="http//:themleaf.org">-->
 
 <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
-      <!--integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"-->
-      <!--crossorigin="anonymous">-->
+<!--integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"-->
+<!--crossorigin="anonymous">-->
 
 <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"-->
-        <!--integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"-->
-        <!--crossorigin="anonymous"></script>-->
+<!--integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"-->
+<!--crossorigin="anonymous"></script>-->
 <!--<head>-->
-    <!--<meta charset="UTF-8">-->
-    <!--<title>Title</title>-->
+<!--<meta charset="UTF-8">-->
+<!--<title>Title</title>-->
 <!--</head>-->
 <!--<body>-->
 <!--<h1>My Recipe!</h1>-->
 
 <!--<table  class="table table-striped">-->
-    <!--<thead>-->
-    <!--<tr>-->
-        <!--<th>Id</th>-->
-        <!--<th>Description</th>-->
-    <!--</tr>-->
-    <!--</thead>-->
-    <!--<tbody>-->
-    <!--<tr th:each="recipe:${recipes}">-->
-        <!--<td th:text="${recipe.id}">123</td>-->
-        <!--<td th:text="${recipe.description}">wow</td>-->
-    <!--</tr>-->
-    <!--<tr th:each="recipe:${recipes}">-->
-        <!--<td th:text="${recipe.id}">678</td>-->
-        <!--<td th:text="${recipe.description}">soso</td>-->
-    <!--</tr>-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th>Id</th>-->
+<!--<th>Description</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody>-->
+<!--<tr th:each="recipe:${recipes}">-->
+<!--<td th:text="${recipe.id}">123</td>-->
+<!--<td th:text="${recipe.description}">wow</td>-->
+<!--</tr>-->
+<!--<tr th:each="recipe:${recipes}">-->
+<!--<td th:text="${recipe.id}">678</td>-->
+<!--<td th:text="${recipe.description}">soso</td>-->
+<!--</tr>-->
 
-    <!--<tr th:each="recipe:${recipes}">-->
-        <!--<td th:text="${recipe.id}">245</td>-->
-        <!--<td th:text="${recipe.description}">zeze</td>-->
-    <!--</tr>-->
+<!--<tr th:each="recipe:${recipes}">-->
+<!--<td th:text="${recipe.id}">245</td>-->
+<!--<td th:text="${recipe.description}">zeze</td>-->
+<!--</tr>-->
 
-    <!--</tbody>-->
+<!--</tbody>-->
 
 <!--</table>-->
 

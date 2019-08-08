@@ -163,7 +163,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
      * @return
      */
     private Ingredient createNewIngredient(String description, BigDecimal amount, UnitOfMeasure uom , Recipe recipe) {
-        Ingredient ingredient = new Ingredient(description,amount,uom);
+        Ingredient ingredient = new Ingredient();
+        ingredient.setDescription(description);
+        ingredient.setAmount(amount);
+        ingredient.setUom(uom);
         ingredient.setRecipe(recipe);
         return ingredient;
     }

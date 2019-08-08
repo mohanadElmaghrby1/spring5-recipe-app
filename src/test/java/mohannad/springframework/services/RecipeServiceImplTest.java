@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -59,6 +60,23 @@ public class RecipeServiceImplTest {
         to make sure that when working well
         */
         verify(recipeRepository , times(2)).findAll();
+
+    }
+
+    @Test
+    public void getRecipeByIdTest() {
+        Recipe recipe=new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe>recipeOptional = Optional.of(recipe);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        Recipe recipe1Returned = recipeService.findById(1L);
+
+        assertNotNull("Null Recipe Returned" , recipe1Returned);
+
+        verify(recipeRepository , times(1)).findById(anyLong());
+        verify(recipeRepository , never()).findAll();
 
     }
 }

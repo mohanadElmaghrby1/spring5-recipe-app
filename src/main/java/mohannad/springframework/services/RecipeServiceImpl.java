@@ -1,20 +1,29 @@
 package mohannad.springframework.services;
 
+import mohannad.springframework.commands.RecipeCommand;
+import mohannad.springframework.converters.RecipeCommandToRecipe;
+import mohannad.springframework.converters.RecipeToRecipeCommand;
 import mohannad.springframework.model.Recipe;
 import mohannad.springframework.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 
 @Service
 public class RecipeServiceImpl  implements RecipeService{
 
     private final RecipeRepository recipeRepository;
+    private final RecipeToRecipeCommand recipeToRecipeCommand;
+    private final RecipeCommandToRecipe recipeCommandToRecipe;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, RecipeToRecipeCommand recipeToRecipeCommand, RecipeCommandToRecipe recipeCommandToRecipe) {
         this.recipeRepository = recipeRepository;
+        this.recipeToRecipeCommand = recipeToRecipeCommand;
+        this.recipeCommandToRecipe = recipeCommandToRecipe;
     }
 
     /**
@@ -44,5 +53,19 @@ public class RecipeServiceImpl  implements RecipeService{
 
         //return the desired  recipe
         return recipeOptional.get();
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand saveRecipeCommand(RecipeCommand command) {
+//        recipeRepository.save(recipeCommandToRecipe.convert(command));
+//        return command;
+
+        Recipe detachedRecipe = recipeCommandToRecipe.convert(command);
+
+        Recipe savedRecipe = recipeRepository.save(detachedRecipe);
+//        log.debug("Saved RecipeId:" + savedRecipe.getId());
+        return recipeToRecipeCommand.convert(savedRecipe);
+
     }
 }

@@ -1,6 +1,8 @@
 package mohannad.springframework.services;
 
 import javafx.beans.binding.When;
+import mohannad.springframework.converters.RecipeCommandToRecipe;
+import mohannad.springframework.converters.RecipeToRecipeCommand;
 import mohannad.springframework.model.Recipe;
 import mohannad.springframework.repositories.RecipeRepository;
 import org.junit.Before;
@@ -24,13 +26,19 @@ public class RecipeServiceImplTest {
     @Mock //indicate that we want mock this object
     RecipeRepository recipeRepository;
 
+    @Mock
+     RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
     @Before
     public void setUp() throws Exception {
         //setup mocks , telling mockito that we want RecipeRepository mock
         MockitoAnnotations.initMocks(this);
 
         //create a RecipeServiceImpl obj using mock
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository , recipeToRecipeCommand , recipeCommandToRecipe);
     }
 
     @Test

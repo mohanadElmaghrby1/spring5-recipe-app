@@ -41,6 +41,15 @@ public class RecipeController {
         return "recipe/recipeform";
     }
 
+
+    @RequestMapping({"/recipe/{id}/delete"})
+    public String updateRecipe(@PathVariable String id){
+        recipeService.deleteById(new Long(id));
+//        log.debug("deleting");
+        return "redirect:/";
+    }
+
+
     /*handle the post back from /recipe/new */
     @PostMapping //    @RequestMapping(name = "recipe" , method = RequestMethod.POST) is the same
     @RequestMapping("recipe")

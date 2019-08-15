@@ -2,15 +2,17 @@ package mohannad.springframework.controllers;
 
 import mohannad.springframework.commands.IngredientCommand;
 import mohannad.springframework.commands.RecipeCommand;
+import mohannad.springframework.commands.UnitOfMeasureCommand;
+import mohannad.springframework.model.UnitOfMeasure;
 import mohannad.springframework.services.IngredientService;
 import mohannad.springframework.services.IngredientServiceImpl;
 import mohannad.springframework.services.RecipeService;
 import mohannad.springframework.services.UnitOfMeasureService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 /**
  * created by mohannad
@@ -46,5 +48,25 @@ public class IngredientController  {
         model.addAttribute("ingredient" , ingredientService.findByRecipeIdAndIngredientId(new Long(recipeId)
                 ,new Long(ingredientId)));
         return "recipe/ingredient/show";
+    }
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/{ingredientId}/update")
+    public String updateRecipeIngredient(@PathVariable String recipeId,@PathVariable String ingredientId,
+                                         Model model) {
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(new Long(recipeId)
+                , new Long(ingredientId)));
+
+        Set<UnitOfMeasureCommand> listUnitOfMeasures = unitOfMeasureService.listAllUom();
+        model.addAttribute("uomList" , listUnitOfMeasures);
+        return "recipe/ingredient/ingredientform";
+    }
+
+    @PostMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient")
+    public String saveOrUpdate(@ModelAttribute IngredientCommand ingredientCommand) {
+        IngredientCommand savedIngredientCommand = ingredientService.saveIngredientCommand(ingredientCommand);
+        String url="redirect:/recipe/"+ingredientCommand.getRecipeId()+"/ingredient/"+ingredientCommand.getId()+"/show";
+        return url;
     }
 }

@@ -11,6 +11,7 @@ import mohannad.springframework.repositories.RecipeRepository;
 import mohannad.springframework.repositories.UnitOfMeasureRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.Set;
 
@@ -48,7 +49,38 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
+    @Transactional
     public IngredientCommand saveIngredientCommand(IngredientCommand command) {
+        //get recipe
+        Optional<Recipe> recipeOptional = recipeRepository.findById(command.getRecipeId());
+        //check if recipe is present
+        if (!recipeOptional.isPresent()){
+            //log error recipe not found
+            return new IngredientCommand();
+        }
+
+        Recipe recipe = recipeOptional.get();
+        //get ingredient
+        Optional<Ingredient> ingredientOptional = recipe.getIngredients()
+                .stream()
+                .filter(ingredient -> ingredient.getId().equals(command.getId()))
+                .findFirst();
+
+        //check if ingredient is present
+        if (ingredientOptional.isPresent()){
+            Ingredient ingredientFound = ingredientOptional.get();
+            ingredientFound.setDescription(command.getDescription());
+            ingredientFound.setAmount(command.getAmount());
+            ingredientFound.setUom(unitOfMeasureRepository
+                    .findById(command.getUom().getId())
+                    .orElseThrow(() -> new RuntimeException("UOM Not Found")));
+        }else {
+            //add new ingredient
+            recipe.getIngredients().add(ingredientCommandToIngredient.convert(command));
+        }
+
+        Recipe saveRecipe = recipeRepository.save(recipe);
+
         return null;
     }
 

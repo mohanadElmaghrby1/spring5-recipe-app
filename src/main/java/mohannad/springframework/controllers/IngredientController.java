@@ -1,5 +1,6 @@
 package mohannad.springframework.controllers;
 
+import mohannad.springframework.commands.IngredientCommand;
 import mohannad.springframework.commands.RecipeCommand;
 import mohannad.springframework.services.IngredientService;
 import mohannad.springframework.services.IngredientServiceImpl;
@@ -39,4 +40,11 @@ public class IngredientController  {
         return "recipe/ingredient/list";
     }
 
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/{ingredientId}/show")
+    public String showRecipeIngredient(@PathVariable String recipeId,@PathVariable String ingredientId, Model model) {
+        model.addAttribute("ingredient" , ingredientService.findByRecipeIdAndIngredientId(new Long(recipeId)
+                ,new Long(ingredientId)));
+        return "recipe/ingredient/show";
+    }
 }

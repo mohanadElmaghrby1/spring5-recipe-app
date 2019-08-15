@@ -36,14 +36,14 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId) {
-//        Recipe recipe = recipeRepository.findById(recipeId).get();
-//        //get first ingeredient
-//        Optional<IngredientCommand> ingredientCommandOptional = recipe.getIngredients().stream()
-//                .filter(ingredient -> ingredient.getId().equals(ingredientId))
-//                .map( ingredient -> ingredientToIngredientCommand.convert(ingredient)).findFirst();
-//
-//        return ingredientCommandOptional.get();
-        return null;
+        Recipe recipe = recipeRepository.findById(recipeId).get();
+        //get first ingeredient
+        Optional<IngredientCommand> ingredientCommandOptional = recipe.getIngredients().stream()
+                .filter(ingredient -> ingredient.getId().equals(ingredientId))
+                .map( ingredient -> ingredientToIngredientCommand.convert(ingredient))
+                .findFirst();
+
+        return ingredientCommandOptional.get();
 
     }
 

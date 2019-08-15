@@ -11,6 +11,7 @@ import mohannad.springframework.repositories.RecipeRepository;
 import mohannad.springframework.repositories.UnitOfMeasureRepository;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.Set;
@@ -100,7 +101,28 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public void deleteById(Long recipeId, Long idToDelete) {
+    public void deleteById(Long recipeId, Long ingredientId) {
+        //getting the Recipe
+        Optional<Recipe > recipeOptional = recipeRepository.findById(recipeId);
 
+        //check if present
+        if ( recipeOptional.isPresent() ){
+            Recipe recipe = recipeOptional.get();
+            Optional<Ingredient > ingredientOptional =recipe.getIngredients()
+                    .stream()
+                    .filter(ingredient -> ingredientId.equals(ingredient.getId()))
+                    .findFirst();
+
+            //check if present
+            if ( ingredientOptional.isPresent() ){
+                //start to remove it from recipe and set its recipe to null
+                Ingredient ingredientToDelete  = ingredientOptional.get();
+                recipe.getIngredients().remove(ingredientToDelete );
+                ingredientToDelete .setRecipe(null);
+                recipeRepository.save(recipe);
+            }
+        }else {
+            //log the error
+        }
     }
 }

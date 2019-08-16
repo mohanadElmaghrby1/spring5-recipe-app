@@ -1,6 +1,7 @@
 package mohannad.springframework.controllers;
 
 import mohannad.springframework.commands.RecipeCommand;
+import mohannad.springframework.model.Recipe;
 import mohannad.springframework.services.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,8 @@ public class RecipeController {
 
     @RequestMapping({"/recipe/{id}/show"})
     public String getRecipe(@PathVariable String id ,  Model model){
-        model.addAttribute("recipe" , recipeService.findById(new Long(id)));
+        Recipe recipe =recipeService.findById(new Long(id));
+        model.addAttribute("recipe" , recipe);
         return "recipe/show";
     }
 

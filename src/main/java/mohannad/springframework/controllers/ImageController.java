@@ -39,6 +39,12 @@ public class ImageController {
         return "recipe/imageuploadform";
     }
 
+    /**
+     * get called when we chose image file
+     * @param id
+     * @param file
+     * @return
+     */
     @PostMapping("recipe/{id}/image")
     public String handleImagePost(@PathVariable String id, @RequestParam("imagefile") MultipartFile file){
 

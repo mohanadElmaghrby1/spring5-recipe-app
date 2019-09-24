@@ -72,10 +72,12 @@ public class RecipeController {
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({NotFoundException.class})
-    public ModelAndView modelAndView(){
+    public ModelAndView modelAndView(Exception exception){
         System.out.println("handel not found exception");
+        System.out.println(exception.getMessage());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("404error");
+        modelAndView.addObject("exception" , exception);
         return modelAndView;
     }
 }

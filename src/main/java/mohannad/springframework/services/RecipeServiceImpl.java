@@ -3,6 +3,7 @@ package mohannad.springframework.services;
 import mohannad.springframework.commands.RecipeCommand;
 import mohannad.springframework.converters.RecipeCommandToRecipe;
 import mohannad.springframework.converters.RecipeToRecipeCommand;
+import mohannad.springframework.exceptions.NotFoundException;
 import mohannad.springframework.model.Recipe;
 import mohannad.springframework.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class RecipeServiceImpl  implements RecipeService{
 
         //check if not found then throw exception
         if (!recipeOptional.isPresent()){
-            throw new RuntimeException("Recipe Not Found!");
+            throw new NotFoundException("Recipe Not Found!");
         }
 
         //return the desired  recipe

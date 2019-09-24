@@ -42,6 +42,11 @@ public class RecipeController {
 
     @RequestMapping({"/recipe/{id}/update"})
     public String updateRecipe(@PathVariable String id ,Model model){
+        try {
+            new Long(id);
+        }catch (NumberFormatException e){
+            throw new NumberFormatException("number format exception for "+id);
+        }
         model.addAttribute("recipe" ,recipeService.findCommandById(new Long(id)));
         return "recipe/recipeform";
     }
@@ -72,7 +77,7 @@ public class RecipeController {
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({NotFoundException.class})
-    public ModelAndView modelAndView(Exception exception){
+    public ModelAndView handleNotFound(Exception exception){
         System.out.println("handel not found exception");
         System.out.println(exception.getMessage());
         ModelAndView modelAndView = new ModelAndView();
@@ -80,4 +85,20 @@ public class RecipeController {
         modelAndView.addObject("exception" , exception);
         return modelAndView;
     }
+
+    /**
+     * ExceptionHandler method for NotFoundException class HttpStatus.BadREquest 404
+     * @return specific view for NumberFormat exception
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({NumberFormatException.class})
+    public ModelAndView handleNumberFormat(Exception exception){
+        System.out.println("handel NumberFormatException exception");
+        System.out.println(exception.getMessage());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("400error");
+        modelAndView.addObject("exception" , exception);
+        return modelAndView;
+    }
+
 }

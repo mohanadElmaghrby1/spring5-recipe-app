@@ -1,11 +1,14 @@
 package mohannad.springframework.controllers;
 
 import mohannad.springframework.commands.RecipeCommand;
+import mohannad.springframework.exceptions.NotFoundException;
 import mohannad.springframework.model.Recipe;
 import mohannad.springframework.services.RecipeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * created by mohannad
@@ -61,5 +64,18 @@ public class RecipeController {
 
         //redirect to the recipe show
         return "redirect:/recipe/"+savedRecipeCommand.getId()+"/show";
+    }
+
+    /**
+     * ExceptionHandler method for NotFoundException class HttpStatus.NOT_FOUND 404
+     * @return specific view for NOt_FOUND exception
+     */
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({NotFoundException.class})
+    public ModelAndView modelAndView(){
+        System.out.println("handel not found exception");
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("404error");
+        return modelAndView;
     }
 }
